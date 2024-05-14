@@ -8,10 +8,12 @@
 
 package types
 
-type CurrentUserCollections struct {
-	ID              int    `json:"id"`
-	Title           string `json:"title"`
-	PublishedAt     string `json:"published_at"`
-	LastCollectedAt string `json:"last_collected_at"`
-	UpdatedAt       string `json:"updated_at"`
+type Exif struct {
+	Make         string `json:"make"`
+	Model        string `json:"model"`
+	Name         string `json:"name"`
+	ExposureTime string `json:"exposure_time"`
+	Aperture     string `json:"aperture"`
+	FocalLength  string `json:"focal_length"`
+	Iso          int    `json:"iso"`
 }

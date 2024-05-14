@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2024. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+ * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+ * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+ * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+ * Vestibulum commodo. Ut rhoncus gravida arcu.
+ */
+
 package main
 
 import (
@@ -110,8 +118,9 @@ func (c *Client) request(method string, req Req, reply interface{}, headers map[
 			values.Add(k, v)
 		}
 	}
-
-	reqURL = reqURL + "?" + values.Encode()
+	if values.Encode() != "" {
+		reqURL = reqURL + "?" + values.Encode()
+	}
 	request, err := http.NewRequest(method, reqURL, buf)
 	if err != nil {
 		return nil, err

@@ -8,10 +8,7 @@
 
 package types
 
-type CurrentUserCollections struct {
-	ID              int    `json:"id"`
-	Title           string `json:"title"`
-	PublishedAt     string `json:"published_at"`
-	LastCollectedAt string `json:"last_collected_at"`
-	UpdatedAt       string `json:"updated_at"`
+type RelatedCollections struct {
+	Total int    `json:"total"`
+	Type  string `json:"type"`
 }
