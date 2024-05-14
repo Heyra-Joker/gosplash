@@ -1,4 +1,4 @@
-package internal
+package main
 
 import (
 	"github.com/google/go-querystring/query"
@@ -19,11 +19,6 @@ type UserAuthenticationReq struct {
 	RedirectURI string `url:"redirect_uri"`
 	// find all scope url is: https://unsplash.com/documentation/user-authentication-workflow#permission-scopes
 	Scope string `url:"scope"`
-}
-
-// UserAuthenticationReply .
-type UserAuthenticationReply struct {
-	URL string `json:"url"`
 }
 
 func (u UserAuthenticationReq) API() string {
@@ -65,7 +60,7 @@ type AuthenticationTokenReply struct {
 	TokenType    string `json:"token_type"`
 	RefreshToken string `json:"refresh_token"`
 	Scope        string `json:"scope"`
-	CreatedAt    int    `json:"created_at"`
+	CreatedAt    string `json:"created_at"`
 	UserID       int    `json:"user_id"`
 	Username     string `json:"username"`
 }
@@ -80,7 +75,7 @@ func (AuthenticationTokenReq) Params() map[string]string {
 
 // AuthenticationToken get authentication token
 // documents: https://unsplash.com/documentation/user-authentication-workflow#authorization-workflow
-func (a *Authentication) AuthenticationToken(req Req) (reply *AuthenticationTokenReply, headers *ResponseHeaders, err error) {
-	headers, err = a.Client.request("POST", req, &reply, nil)
+func (a *Authentication) AuthenticationToken(req Req) (reply *AuthenticationTokenReply, response *OmitResponse, err error) {
+	response, err = a.Client.request("POST", req, &reply, nil)
 	return
 }

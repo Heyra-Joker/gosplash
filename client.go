@@ -1,4 +1,4 @@
-package internal
+package main
 
 import (
 	"bytes"
@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"github.com/google/go-querystring/query"
 	"io"
-	"log"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -30,10 +29,14 @@ func SetClientProxy(proxyURL string) ClientOption {
 	}
 }
 
-// ResponseHeaders define response headers
-type ResponseHeaders struct {
+// OmitResponse define response headers and  other info
+type OmitResponse struct {
 	RateLimitLimit     int `json:"X-Ratelimit-Limit"`
 	RateLimitRemaining int `json:"X-Ratelimit-Remaining"`
+	// original response body
+	OriginResponseBody string
+	// request URL
+	requestURL string
 }
 
 // Req request params interface
@@ -68,7 +71,7 @@ func NewClient(clientId string, opt ...ClientOption) *Client {
 	return c
 }
 
-func (c *Client) request(method string, req Req, reply interface{}, headers map[string]string) (respHeaders *ResponseHeaders, err error) {
+func (c *Client) request(method string, req Req, reply interface{}, headers map[string]string, urlPath ...string) (response *OmitResponse, err error) {
 	var buf io.Reader
 	var values url.Values
 	header := make(map[string]string)
@@ -82,9 +85,15 @@ func (c *Client) request(method string, req Req, reply interface{}, headers map[
 		}
 	}
 
-	// add default Authorization Client Id
+	// add default Authorization Client id
 	if _, ok := header["Authorization"]; !ok {
 		header["Authorization"] = fmt.Sprintf("Client-ID %s", c.clientId)
+	}
+
+	// create request URL
+	reqURL := req.API()
+	if urlPath != nil {
+		reqURL, _ = url.JoinPath(reqURL, urlPath...)
 	}
 
 	// create body or query
@@ -102,7 +111,8 @@ func (c *Client) request(method string, req Req, reply interface{}, headers map[
 		}
 	}
 
-	request, err := http.NewRequest(method, req.API(), buf)
+	reqURL = reqURL + "?" + values.Encode()
+	request, err := http.NewRequest(method, reqURL, buf)
 	if err != nil {
 		return nil, err
 	}
@@ -125,34 +135,39 @@ func (c *Client) request(method string, req Req, reply interface{}, headers map[
 	}
 
 	// create response headers
-	respHeaders = c.parseHeaders(resp.Header)
+	response = c.parseOmitResponseResponse(resp.Header)
+
+	// add origin response body
+	response.OriginResponseBody = string(data)
+
+	// add request URL
+	response.requestURL = reqURL
 
 	// check response's status
 	if resp.StatusCode != 200 {
-		return respHeaders, errors.New(string(data))
+		return response, errors.New(string(data))
 	}
 
 	// create response
-	log.Println(string(data))
 	if reply != nil {
 		err = json.Unmarshal(data, reply)
 		if err != nil {
-			return respHeaders, err
+			return response, err
 		}
 	}
 	return
 }
 
-func (c *Client) parseHeaders(header http.Header) *ResponseHeaders {
-	respHeader := &ResponseHeaders{}
+func (c *Client) parseOmitResponseResponse(header http.Header) *OmitResponse {
+	response := &OmitResponse{}
 	if header.Get("X-Ratelimit-Limit") != "" {
 		rateLimit, _ := strconv.Atoi(header.Get("X-Ratelimit-Limit"))
-		respHeader.RateLimitLimit = rateLimit
+		response.RateLimitLimit = rateLimit
 	}
 
 	if header.Get("X-Ratelimit-Remaining") != "" {
 		rateLimit, _ := strconv.Atoi(header.Get("X-Ratelimit-Remaining"))
-		respHeader.RateLimitRemaining = rateLimit
+		response.RateLimitRemaining = rateLimit
 	}
-	return respHeader
+	return response
 }
