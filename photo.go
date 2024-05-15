@@ -13,7 +13,10 @@
 
 package main
 
-import "github.com/Heyra-Joker/gosplash/types"
+import (
+	"fmt"
+	"github.com/Heyra-Joker/gosplash/types"
+)
 
 type Photo struct {
 	Client *Client
@@ -336,5 +339,233 @@ func (PhotoRandomReq) Params() map[string]string {
 // document: https://unsplash.com/documentation#get-a-random-photo
 func (p *Photo) Random(req PhotoRandomReq) (reply *PhotoRandomReply, response *OmitResponse, err error) {
 	response, err = p.Client.request("GET", req, &reply, nil)
+	return
+}
+
+// PhotoStatisticsReq Get a photo’s statistics request
+type PhotoStatisticsReq struct {
+}
+
+// PhotoStatisticsReply Get a photo’s statistics reply
+type PhotoStatisticsReply struct {
+	types.Statistics
+	Downloads struct {
+		types.Downloads
+		Historical struct {
+			types.Historical
+			Values []types.Values `json:"values"`
+		} `json:"historical"`
+	} `json:"downloads"`
+	Views struct {
+		types.Views
+		Historical struct {
+			types.Historical
+			Values []types.Values `json:"values"`
+		} `json:"historical"`
+	} `json:"views"`
+	Likes struct {
+		types.Likes
+		Historical struct {
+			types.Historical
+			Values []types.Values `json:"values"`
+		} `json:"historical"`
+	} `json:"likes"`
+}
+
+func (PhotoStatisticsReq) API() string {
+	return "https://api.unsplash.com/photos"
+}
+
+func (PhotoStatisticsReq) Params() map[string]string {
+	return nil
+}
+
+// Statistics Get a photo’s statistics
+// Retrieve total number of downloads, views and likes of a single photo,
+// as well as the historical breakdown of these stats in a specific timeframe (default is 30 days).
+// document: https://unsplash.com/documentation#get-a-photos-statistics
+func (p *Photo) Statistics(photoId string) (reply *PhotoStatisticsReply, response *OmitResponse, err error) {
+	response, err = p.Client.request("GET", PhotoStatisticsReq{}, &reply, nil, photoId, "statistics")
+	return
+}
+
+// PhotoTrackDownloadReq Track a photo download request
+type PhotoTrackDownloadReq struct {
+}
+
+// PhotoTrackDownloadReply Track a photo download reply
+type PhotoTrackDownloadReply struct {
+	URL string `json:"url"`
+}
+
+func (PhotoTrackDownloadReq) API() string {
+	return "https://api.unsplash.com/photos"
+}
+
+func (PhotoTrackDownloadReq) Params() map[string]string {
+	return nil
+}
+
+// TrackDownload Track a photo download
+// Note: some photo can not download, error will return `{"errors":["Unauthorized"]}`
+// document: https://unsplash.com/documentation#track-a-photo-download
+func (p *Photo) TrackDownload(photoId string) (reply *PhotoTrackDownloadReply, response *OmitResponse, err error) {
+	response, err = p.Client.request("GET", PhotoTrackDownloadReq{}, &reply, nil, photoId, "download")
+	return
+}
+
+// PhotoUpdateReq Update a photo on behalf of the logged-in user. request
+type PhotoUpdateReq struct {
+	ID                  string `json:"id"`
+	Description         string `json:"description,omitempty"`
+	ShowOnProfile       string `json:"show_on_profile,omitempty"`
+	Tags                string `json:"tags,omitempty"`
+	LocationLatitude    string `json:"location[latitude],omitempty"`
+	LocationLongitude   string `json:"location[longitude],omitempty"`
+	LocationName        string `json:"location[name],omitempty"`
+	LocationCity        string `json:"location[city],omitempty"`
+	LocationCountry     string `json:"location[country],omitempty"`
+	ExifMake            string `json:"exif[make],omitempty"`
+	ExifModel           string `json:"exif[model],omitempty"`
+	ExifExposureTime    string `json:"exif[exposure_time],omitempty"`
+	ExifApertureValue   string `json:"exif[aperture_value],omitempty"`
+	ExifFocalLength     string `json:"exif[focal_length],omitempty"`
+	ExifIsoSpeedRatings string `json:"exif[iso_speed_ratings],omitempty"`
+}
+
+// PhotoUpdateReply Update a photo on behalf of the logged-in user reply
+type PhotoUpdateReply struct {
+	types.Photos
+	Location struct {
+		types.Location
+		Position types.Position `json:"position"`
+	} `json:"location"`
+	Tags                   []types.Tags `json:"tags"`
+	CurrentUserCollections []struct {
+		types.CurrentUserCollections
+		CoverPhoto types.CoverPhoto `json:"cover_photo"`
+		User       types.User       `json:"user"`
+	} `json:"current_user_collections"`
+	URLs  types.URLs  `json:"urls"`
+	Links types.Links `json:"links"`
+	User  struct {
+		types.User
+		Links types.Links `json:"links"`
+	} `json:"user"`
+}
+
+func (PhotoUpdateReq) API() string {
+	return "https://api.unsplash.com/photos"
+}
+
+func (PhotoUpdateReq) Params() map[string]string {
+	return nil
+}
+
+// UnimplementedUpdate a photo on behalf of the logged-in user. This requires the write_photos scope.
+// Note: Sorry about this function, I have no permission to upload image :(
+// If you have the necessary permissions, you can submit an issue to fix this function.
+// document: https://unsplash.com/documentation#update-a-photo
+func (p *Photo) UnimplementedUpdate(token string, req PhotoUpdateReq) (reply *PhotoUpdateReply, response *OmitResponse, err error) {
+	headers := map[string]string{
+		"Authorization": fmt.Sprintf("Bearer %s", token),
+	}
+	response, err = p.Client.request("PUT", req, &reply, headers, req.ID)
+	return
+}
+
+// PhotoLikeReq Like a photo request
+type PhotoLikeReq struct {
+}
+
+// PhotoLikeReply Like a photo reply
+type PhotoLikeReply struct {
+	Photo struct {
+		types.Photos
+		AlternativeSlugs       types.AlternativeSlugs         `json:"alternative_slugs"`
+		Breadcrumbs            []types.Breadcrumbs            `json:"breadcrumbs"`
+		URLs                   types.URLs                     `json:"urls"`
+		Links                  types.Links                    `json:"links"`
+		CurrentUserCollections []types.CurrentUserCollections `json:"current_user_collections"`
+		TopicSubmissions       types.TopicSubmissions         `json:"topic_submissions"`
+		User                   struct {
+			types.User
+			Links        types.Links        `json:"links"`
+			ProfileImage types.ProfileImage `json:"profile_image"`
+			Social       types.Social       `json:"social"`
+		} `json:"user"`
+	} `json:"photo"`
+	User struct {
+		types.User
+		Links        types.Links        `json:"links"`
+		ProfileImage types.ProfileImage `json:"profile_image"`
+		Social       types.Social       `json:"social"`
+	} `json:"user"`
+}
+
+func (PhotoLikeReq) API() string {
+	return "https://api.unsplash.com/photos"
+}
+
+func (PhotoLikeReq) Params() map[string]string {
+	return nil
+}
+
+// Like  a photo
+// Like a photo on behalf of the logged-in user. This requires the write_likes scope.
+// document: https://unsplash.com/documentation#like-a-photo
+func (p *Photo) Like(token string, photoId string) (reply *PhotoLikeReply, response *OmitResponse, err error) {
+	headers := map[string]string{
+		"Authorization": fmt.Sprintf("Bearer %s", token),
+	}
+	response, err = p.Client.request("POST", PhotoLikeReq{}, &reply, headers, photoId, "like")
+	return
+}
+
+// PhotoUnLikeReq unlike a photo request
+type PhotoUnLikeReq struct {
+}
+
+// PhotoUnLikeReply unlike a photo reply
+type PhotoUnLikeReply struct {
+	Photo struct {
+		types.Photos
+		AlternativeSlugs       types.AlternativeSlugs         `json:"alternative_slugs"`
+		Breadcrumbs            []types.Breadcrumbs            `json:"breadcrumbs"`
+		URLs                   types.URLs                     `json:"urls"`
+		Links                  types.Links                    `json:"links"`
+		CurrentUserCollections []types.CurrentUserCollections `json:"current_user_collections"`
+		TopicSubmissions       types.TopicSubmissions         `json:"topic_submissions"`
+		User                   struct {
+			types.User
+			Links        types.Links        `json:"links"`
+			ProfileImage types.ProfileImage `json:"profile_image"`
+			Social       types.Social       `json:"social"`
+		} `json:"user"`
+	} `json:"photo"`
+	User struct {
+		types.User
+		Links        types.Links        `json:"links"`
+		ProfileImage types.ProfileImage `json:"profile_image"`
+		Social       types.Social       `json:"social"`
+	} `json:"user"`
+}
+
+func (PhotoUnLikeReq) API() string {
+	return "https://api.unsplash.com/photos"
+}
+
+func (PhotoUnLikeReq) Params() map[string]string {
+	return nil
+}
+
+// UnLike  a photo
+// UnLike a photo on behalf of the logged-in user. This requires the write_likes scope.
+// document: https://unsplash.com/documentation#like-a-photo
+func (p *Photo) UnLike(token string, photoId string) (reply *PhotoUnLikeReply, response *OmitResponse, err error) {
+	headers := map[string]string{
+		"Authorization": fmt.Sprintf("Bearer %s", token),
+	}
+	response, err = p.Client.request("DELETE", PhotoUnLikeReq{}, &reply, headers, photoId, "like")
 	return
 }

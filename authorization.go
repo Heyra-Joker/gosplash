@@ -73,7 +73,7 @@ type AuthenticationTokenReply struct {
 	TokenType    string `json:"token_type"`
 	RefreshToken string `json:"refresh_token"`
 	Scope        string `json:"scope"`
-	CreatedAt    string `json:"created_at"`
+	CreatedAt    int64  `json:"created_at"`
 	UserID       int    `json:"user_id"`
 	Username     string `json:"username"`
 }

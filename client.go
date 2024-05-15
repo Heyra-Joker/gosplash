@@ -23,6 +23,7 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -158,7 +159,7 @@ func (c *Client) request(method string, req Req, reply interface{}, headers map[
 	response.requestURL = reqURL
 
 	// check response's status
-	if resp.StatusCode != 200 {
+	if !strings.HasPrefix(strconv.Itoa(resp.StatusCode), "2") {
 		return response, errors.New(string(data))
 	}
 

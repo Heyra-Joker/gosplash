@@ -13,6 +13,6 @@
 
 package types
 
-type Tags struct {
-	Title string `json:"title"`
+type Likes struct {
+	Total int64 `json:"total"`
 }
