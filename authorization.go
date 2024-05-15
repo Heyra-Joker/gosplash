@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-package main
+package gosplash
 
 import (
 	"github.com/google/go-querystring/query"
