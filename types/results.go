@@ -24,4 +24,16 @@ type Results struct {
 	TotalPhotos     int    `json:"total_photos"`
 	Private         bool   `json:"private"`
 	ShareKey        string `json:"share_key"`
+	Slug            string `json:"slug"`
+	CreatedAt       string `json:"created_at"`
+	PromotedAt      string `json:"promoted_at"`
+	Width           int    `json:"width"`
+	Height          int    `json:"height"`
+	Color           string `json:"color"`
+	BlurHash        string `json:"blur_hash"`
+	AltDescription  string `json:"alt_description"`
+	Likes           int    `json:"likes"`
+	LikedByUser     bool   `json:"liked_by_user"`
+	Sponsorship     string `json:"sponsorship"`
+	AssetType       string `json:"asset_type"`
 }
