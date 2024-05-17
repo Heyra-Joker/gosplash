@@ -14,4 +14,18 @@
 package types
 
 type Topics struct {
+	Id                          string `json:"id"`
+	Slug                        string `json:"slug"`
+	Title                       string `json:"title"`
+	Description                 string `json:"description"`
+	PublishedAt                 string `json:"published_at"`
+	UpdatedAt                   string `json:"updated_at"`
+	StartsAt                    string `json:"starts_at"`
+	EndsAt                      string `json:"ends_at"`
+	OnlySubmissionsAfter        string `json:"only_submissions_after"`
+	Visibility                  string `json:"visibility"`
+	Featured                    bool   `json:"featured"`
+	TotalPhotos                 int    `json:"total_photos"`
+	TotalCurrentUserSubmissions string `json:"total_current_user_submissions"`
+	Status                      string `json:"status"`
 }
