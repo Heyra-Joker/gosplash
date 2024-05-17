@@ -21,7 +21,7 @@ func TestClient_UserAuthentication(t *testing.T) {
 	a := Authentication{Client: NewClient(accessKey)}
 	authURL := a.UserAuthentication(UserAuthenticationReq{
 		RedirectURI: "urn:ietf:wg:oauth:2.0:oob",
-		Scope:       "public+read_user+write_user+write_likes",
+		Scope:       "public+read_user+write_user+write_likes+write_collections",
 	})
 
 	t.Log(authURL)
@@ -32,7 +32,7 @@ func TestAuthentication_AuthenticationToken(t *testing.T) {
 	token, response, err := a.AuthenticationToken(AuthenticationTokenReq{
 		ClientSecret: "8BIWgR3XtlTGGAtRtZZI3AY3j99mcu6LVBjDSNZK8RY",
 		RedirectURI:  "urn:ietf:wg:oauth:2.0:oob",
-		Code:         "WLDDPnH-3sHHiOIX0yxdFYv9TeBNfcP7bs85i3kRbl4",
+		Code:         "WKDlzMFMv7b11Or94UX2O4PRnLyn3p7i--0hX2VlmHM",
 		GrantType:    "authorization_code",
 		ClientID:     accessKey,
 	})
@@ -41,4 +41,5 @@ func TestAuthentication_AuthenticationToken(t *testing.T) {
 		t.Fatal(err)
 	}
 	t.Logf("%#v", token)
+	// HlfuUYQH5y8
 }

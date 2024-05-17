@@ -50,10 +50,10 @@ func (c MeRequest) Params() map[string]string {
 // Me Get the user’s profile
 // document: https://unsplash.com/documentation#get-the-users-profile
 func (c *CurrentUser) Me(token string) (reply *MeReply, response *OmitResponse, err error) {
-	reqHeaders := map[string]string{
+	headers := map[string]string{
 		"Authorization": fmt.Sprintf("Bearer %s", token),
 	}
-	response, err = c.Client.request("GET", MeRequest{}, &reply, reqHeaders)
+	response, err = c.Client.request("GET", MeRequest{}, &reply, headers)
 	return
 }
 
@@ -92,10 +92,10 @@ func (r UpdateMeRequest) Params() map[string]string {
 // UpdateMe Update the current user’s profile
 // Note: This action requires the write_user scope. Without it, it will return a 403 Forbidden response.
 // document: https://unsplash.com/documentation#update-the-current-users-profile
-func (c *CurrentUser) UpdateMe(token string, req UpdateMeRequest) (reply *UpdateMeReply, headers *OmitResponse, err error) {
-	reqHeaders := map[string]string{
+func (c *CurrentUser) UpdateMe(token string, req UpdateMeRequest) (reply *UpdateMeReply, response *OmitResponse, err error) {
+	headers := map[string]string{
 		"Authorization": fmt.Sprintf("Bearer %s", token),
 	}
-	headers, err = c.Client.request("PUT", req, &reply, reqHeaders)
+	response, err = c.Client.request("PUT", req, &reply, headers)
 	return
 }

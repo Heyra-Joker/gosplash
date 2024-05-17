@@ -14,5 +14,7 @@
 package types
 
 type Meta struct {
-	Index bool `json:"index"`
+	Index       bool   `json:"index"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
 }

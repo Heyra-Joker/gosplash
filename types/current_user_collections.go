@@ -14,7 +14,7 @@
 package types
 
 type CurrentUserCollections struct {
-	ID              int    `json:"id"`
+	ID              string `json:"id"` // AddPhoto2Collection api this type is string
 	Title           string `json:"title"`
 	PublishedAt     string `json:"published_at"`
 	LastCollectedAt string `json:"last_collected_at"`
