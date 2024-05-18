@@ -1,17 +1,14 @@
 <div align=center>
 
-# GoSplash
+# 🚀 GoSplash 🚀
 
 [![Apache2.o License](https://img.shields.io/badge/license-Apache2.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
 <img src="./logo/logo.png" style="width: 200px" alt="">
 
-This repository is a Golang SDK developed based on the [Unsplash API](https://unsplash.com/documentation#getting-started) content and covers all current APIs.
-
-🔥🔥🔥
-
 [Unsplash](https://unsplash.com/) provides freely licensed high-resolution photos that can be used for anything.
 
+This repository is a Golang SDK developed based on the [Unsplash API](https://unsplash.com/documentation#getting-started) content and covers all current APIs.
 
 </div>
 
@@ -40,7 +37,7 @@ fmt.Println(response.OriginResponseBody)
 fmt.Println(response.RateLimitRemaining)
 fmt.Println(response.RateLimitLimit)
 data, _ := json.Marshal(res)
-fmt.Println()(string(data))
+fmt.Println(string(data))
 
 ```
 
