@@ -27,17 +27,29 @@ You can then create a new application and use the AppID and Secret for authentic
 ## Usage
 
 ```go
-photoGroup := Photo{Client: NewClient(<Your Client ID>, nil)}
-res, response, err := photoGroup.Random(PhotoRandomReq{})
-if err != nil {
-    fmt.Fatal(err)
+package main
+
+import (
+	"encoding/json"
+	"log"
+
+	"github.com/Heyra-Joker/gosplash"
+)
+
+func main() {
+	clientId := "<YOUR CLIENT ID>"
+	g := gosplash.Photo{Client: gosplash.NewClient(clientId, gosplash.SetClientProxy("http://127.0.0.1:7890"))}
+	reply, response, err := g.Random(gosplash.PhotoRandomReq{})
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Println(response.OriginResponseBody)
+	log.Println(response.RateLimitLimit)
+	log.Println(response.RateLimitRemaining)
+	data, _ := json.Marshal(reply)
+	log.Println(string(data))
+
 }
-fmt.Println(response.requestURL)
-fmt.Println(response.OriginResponseBody)
-fmt.Println(response.RateLimitRemaining)
-fmt.Println(response.RateLimitLimit)
-data, _ := json.Marshal(res)
-fmt.Println(string(data))
 
 ```
 

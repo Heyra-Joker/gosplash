@@ -337,7 +337,10 @@ func (PhotoRandomReq) Params() map[string]string {
 // Retrieve a single random photo, given optional filters.
 // All parameters are optional, and can be combined to narrow the pool of photos from which a random one will be chosen.
 // document: https://unsplash.com/documentation#get-a-random-photo
-func (p *Photo) Random(req PhotoRandomReq) (reply *PhotoRandomReply, response *OmitResponse, err error) {
+func (p *Photo) Random(req PhotoRandomReq) (reply []*PhotoRandomReply, response *OmitResponse, err error) {
+	if req.Count == "" {
+		req.Count = "1"
+	}
 	response, err = p.Client.request("GET", req, &reply, nil)
 	return
 }
