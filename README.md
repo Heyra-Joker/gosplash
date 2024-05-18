@@ -70,6 +70,6 @@ If you find that some request responses are not included in `Reply`, please subm
 
 ## License
 
-[Apache2.o License](https://www.apache.org/licenses/LICENSE-2.0)
+[Apache2.0 License](https://www.apache.org/licenses/LICENSE-2.0)
 
 
