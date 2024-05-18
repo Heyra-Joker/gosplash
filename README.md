@@ -37,18 +37,17 @@ import (
 )
 
 func main() {
-	clientId := "<YOUR CLIENT ID>"
-	g := gosplash.Photo{Client: gosplash.NewClient(clientId, gosplash.SetClientProxy("http://127.0.0.1:7890"))}
-	reply, response, err := g.Random(gosplash.PhotoRandomReq{})
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Println(response.OriginResponseBody)
-	log.Println(response.RateLimitLimit)
-	log.Println(response.RateLimitRemaining)
-	data, _ := json.Marshal(reply)
-	log.Println(string(data))
-
+    clientId := "<YOUR CLIENT ID>"
+    g := gosplash.Photo{Client: gosplash.NewClient(clientId, gosplash.SetClientProxy("http://127.0.0.1:7890"))}
+    reply, response, err := g.Random(gosplash.PhotoRandomReq{})
+    if err != nil {
+        log.Fatal(err)
+    }
+    log.Println(response.OriginResponseBody)
+    log.Println(response.RateLimitLimit)
+    log.Println(response.RateLimitRemaining)
+    data, _ := json.Marshal(reply)
+    log.Println(string(data))
 }
 
 ```
