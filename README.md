@@ -15,7 +15,7 @@ This repository is a Golang SDK developed based on the [Unsplash API](https://un
 ## Installation
 
 ```bash
-  go get https://github.com/Heyra-Joker/gosplash
+  go get github.com/Heyra-Joker/gosplash
 ```
 
 ## Documentation
