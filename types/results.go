@@ -34,6 +34,6 @@ type Results struct {
 	AltDescription  string `json:"alt_description"`
 	Likes           int    `json:"likes"`
 	LikedByUser     bool   `json:"liked_by_user"`
-	Sponsorship     string `json:"sponsorship"`
-	AssetType       string `json:"asset_type"`
+	//Sponsorship     string `json:"sponsorship"`
+	AssetType string `json:"asset_type"`
 }

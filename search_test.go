@@ -21,12 +21,12 @@ import (
 func TestSearch_Photos(t *testing.T) {
 	searchGroup := Search{Client: NewClient(accessKey, SetClientProxy("http://127.0.0.1:7890"))}
 	res, response, err := searchGroup.Photos(SearchPhotosReq{
-		Query:         "cat",
+		Query:         "beauty women",
 		Page:          "1",
 		PerPage:       "1",
 		OrderBy:       "",
 		Collections:   "",
-		ContentFilter: "",
+		ContentFilter: "high",
 		Color:         "",
 		Orientation:   "",
 		Lang:          "",

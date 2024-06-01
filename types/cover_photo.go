@@ -27,8 +27,8 @@ type CoverPhoto struct {
 	AltDescription string `json:"alt_description"`
 	Likes          int    `json:"likes"`
 	LikedByUser    bool   `json:"liked_by_user"`
-	Sponsorship    string `json:"sponsorship"`
-	AssetType      string `json:"asset_type"`
-	Premium        bool   `json:"premium"`
-	Plus           bool   `json:"plus"`
+	//Sponsorship    string `json:"sponsorship"`
+	AssetType string `json:"asset_type"`
+	Premium   bool   `json:"premium"`
+	Plus      bool   `json:"plus"`
 }

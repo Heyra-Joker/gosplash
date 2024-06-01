@@ -28,8 +28,8 @@ type Photos struct {
 	AltDescription string `json:"alt_description"`
 	Likes          int    `json:"likes"`
 	LikedByUser    bool   `json:"liked_by_user"`
-	Sponsorship    string `json:"sponsorship"`
-	PublicDomain   bool   `json:"public_domain"`
-	Views          int    `json:"views"`
-	Downloads      int    `json:"downloads"`
+	//Sponsorship    string `json:"sponsorship"`
+	PublicDomain bool `json:"public_domain"`
+	Views        int  `json:"views"`
+	Downloads    int  `json:"downloads"`
 }
